@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Juego del Nim</title>
+    <link rel="stylesheet" href="styles/main.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Juego del Nim</h1>
+
+      <div class="settings">
+        <fieldset class="groups-container">
+          <legend>Define los montones</legend>
+          <div id="groups">
+            <input type="number" min="1" />
+            <input type="number" min="1" />
+            <input type="number" min="1" />
+          </div>
+          <button class="groups-button" id="removeGroupButton">-</button>
+          <button class="groups-button" id="addGroupButton">+</button>
+        </fieldset>
+
+        <fieldset>
+          <legend>Elige quién hará el primer movimiento</legend>
+          <label>
+            <input
+              type="radio"
+              name="firstMovementRadio"
+              value="player"
+              checked="checked"
+            />
+            Yo
+          </label>
+          <label>
+            <input type="radio" name="firstMovementRadio" value="machine" />
+            La maquina
+          </label>
+        </fieldset>
+      </div>
+
+      <div>
+        <button id="startButton" class="btn">Iniciar</button>
+        <p id="errorLabel" class="error">
+          Ingrese cantidades válidas para todos los montones.
+        </p>
+      </div>
+
+      <div id="gameStep"></div>
+      <div id="winner">
+        <p>Ganador</p>
+        <button id="goTopButton" class="btn">Ir arriba</button>
+      </div>
+    </div>
+
+    <div id="playerSection">
+      <div>
+        <span>Haz tu jugada:</span>
+        <div class="player-inputs">
+          <label>
+            Montón
+            <select id="playerGroup"></select>
+          </label>
+          <label>
+            Cantidad
+            <input type="number" min="1" id="playerAmount" />
+          </label>
+          <button id="playerButton" class="btn">Jugar</button>
+        </div>
+      </div>
+      <p id="playerError" class="error">
+        Movimiento invalido. Intente nuevamente.
+      </p>
+    </div>
+
+    <script type="module" src="js/main.js"></script>
+  </body>
+</html>
