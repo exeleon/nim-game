@@ -23,11 +23,25 @@
   overflow-x: auto;
 }
 
+header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
 h1 {
   font-size: 48px;
   font-weight: bold;
   text-align: center;
-  margin-bottom: 32px;
+  margin-bottom: 12px;
+}
+
+h5 {
+  margin-bottom: 12px;
+}
+
+a {
+  color: blue;
+  text-decoration: underline;
 }
 
 .settings {
@@ -52,10 +66,6 @@ h1 {
 
 .settings-group:not(:last-child) {
   margin-bottom: 32px;
-}
-
-.settings-group h5 {
-  margin-bottom: 12px;
 }
 
 .settings-group label {
