@@ -1,4 +1,4 @@
-import { simular_nim, preparar_matriz } from "./modules/nim.mjs";
+import { obtener_jugada_optima, preparar_matriz } from "./modules/nim.mjs";
 
 window.onload = main;
 
@@ -109,7 +109,8 @@ function main() {
   }
 
   function machineMove() {
-    const [matrix, newHeaps, heapIndex, takenAmount] = simular_nim(heaps);
+    const [matrix, newHeaps, heapIndex, takenAmount] =
+      obtener_jugada_optima(heaps);
 
     heaps = newHeaps;
     drawMatrix(
