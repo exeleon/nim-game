@@ -1,140 +1,141 @@
 import { simular_nim, preparar_matriz } from "./modules/nim.mjs";
 
-window.onload = iniciar;
+window.onload = main;
 
-function iniciar() {
-  const groups = document.getElementById("groups");
-  const removeGroupButton = document.getElementById("removeGroupButton");
-  const addGroupButton = document.getElementById("addGroupButton");
+function main() {
+  const heapsContainer = document.getElementById("heapsContainer");
+  const removeHeapButton = document.getElementById("removeHeapButton");
+  const addHeapButton = document.getElementById("addHeapButton");
   const startButton = document.getElementById("startButton");
-  const errorLabel = document.getElementById("errorLabel");
-  const gameStep = document.getElementById("gameStep");
-  const playerSection = document.getElementById("playerSection");
-  const playerGroup = document.getElementById("playerGroup");
+  const settingsError = document.getElementById("settingsError");
+  const gameSteps = document.getElementById("gameSteps");
+  const player = document.getElementsByClassName("player")[0];
+  const playerHeap = document.getElementById("playerHeap");
   const playerAmount = document.getElementById("playerAmount");
   const playerButton = document.getElementById("playerButton");
   const playerError = document.getElementById("playerError");
   const goTopButton = document.getElementById("goTopButton");
-  const winner = document.getElementById("winner");
+  const winner = document.getElementsByClassName("winner")[0];
 
-  let montones;
+  let heaps;
+  let moveCounter = 0;
 
-  function drawMatrix(matriz, title) {
-    const matrizTable = document.createElement("table");
+  function drawMatrix(matrix, title) {
+    const matrixTable = document.createElement("table");
 
-    for (let i = 0; i < matriz.length; i++) {
-      const row = matriz[i];
-      const matrizRow = document.createElement("tr");
+    for (let i = 0; i < matrix.length; i++) {
+      const row = matrix[i];
+      const matrixRow = document.createElement("tr");
       const rowNameCell = document.createElement("td");
       const rowAmountCell = document.createElement("td");
       rowNameCell.innerText = `Montón ${i + 1}`;
-      rowAmountCell.innerText = `[${montones[i]}]`;
-      matrizRow.appendChild(rowNameCell);
-      matrizRow.appendChild(rowAmountCell);
+      rowAmountCell.innerText = `[${heaps[i]}]`;
+      matrixRow.appendChild(rowNameCell);
+      matrixRow.appendChild(rowAmountCell);
 
-      for (const column of row) {
-        const matrizCell = document.createElement("td");
-        matrizCell.innerText = column;
-        matrizRow.appendChild(matrizCell);
+      for (const cell of row) {
+        const matrixCell = document.createElement("td");
+        matrixCell.innerText = cell;
+        matrixRow.appendChild(matrixCell);
       }
-      matrizTable.appendChild(matrizRow);
+      matrixTable.appendChild(matrixRow);
     }
 
-    const matrizContainer = document.createElement("div");
-    matrizContainer.className = "matrix-container";
+    const matrixContainer = document.createElement("div");
     const titleElement = document.createElement("p");
-    titleElement.innerText = title;
+    matrixContainer.className = "matrix-container";
+    titleElement.innerText = `${moveCounter++}. ${title}`;
 
-    matrizContainer.appendChild(titleElement);
-    matrizContainer.appendChild(matrizTable);
-    gameStep.appendChild(matrizContainer);
-    gameStep.style.display = "block";
+    matrixContainer.appendChild(titleElement);
+    matrixContainer.appendChild(matrixTable);
+    gameSteps.appendChild(matrixContainer);
+    gameSteps.style.display = "block";
   }
 
   function startGame() {
-    const groupsArray = [];
-    for (const child of groups.children) {
+    const heapsArray = [];
+    for (const child of heapsContainer.children) {
       if (child.tagName === "INPUT") {
         const amount = parseInt(child.value);
         if (amount > 0) {
-          groupsArray.push(amount);
+          heapsArray.push(amount);
         } else {
-          errorLabel.style.display = "block";
+          settingsError.style.display = "block";
           return;
         }
       }
     }
 
-    errorLabel.style.display = "none";
+    moveCounter = 0;
+    heaps = heapsArray;
+    settingsError.style.display = "none";
     winner.style.display = "none";
-    gameStep.innerHTML = null;
+    gameSteps.innerHTML = null;
+    playerHeap.innerHTML = null;
 
-    montones = groupsArray;
-    // montones = [29, 11, 14];
-    const matriz = preparar_matriz(montones);
-    drawMatrix(matriz, "Estado inicial");
+    const matrix = preparar_matriz(heaps);
+    drawMatrix(matrix, "Estado inicial");
 
-    playerGroup.innerHTML = null;
-    matriz.forEach((_, index) => {
+    matrix.forEach((_, index) => {
       const option = document.createElement("option");
       option.value = index.toString();
       option.innerText = (index + 1).toString();
-      playerGroup.appendChild(option);
+      playerHeap.appendChild(option);
     });
 
     const firstMovementRadio = document.getElementsByName("firstMovementRadio");
-
     const firstMovement = Array.from(firstMovementRadio.values()).find(
       (e) => e.checked
     );
 
-    if (firstMovement.value === "machine") {
-      machineTurn();
+    if (firstMovement.value === "cpu") {
+      machineMove();
     } else {
-      playerSection.style.display = "flex";
+      player.style.display = "flex";
     }
   }
 
   function verifyWinner() {
-    const isWinner = montones.every((monton) => monton === 0);
+    const isWinner = heaps.every((heap) => heap === 0);
     return isWinner;
   }
 
   function drawWinner(playerWins) {
     winner.children[0].innerText = playerWins
       ? "Tú ganaste!"
-      : "La maquina ganó!";
+      : "La computadora ganó!";
     winner.style.display = "flex";
-    playerSection.style.display = "none";
+    player.style.display = "none";
   }
 
-  function machineTurn() {
-    const [matriz, nuevos_montones, heapIndex, retirados] =
-      simular_nim(montones);
-    montones = nuevos_montones;
+  function machineMove() {
+    const [matrix, newHeaps, heapIndex, takenAmount] = simular_nim(heaps);
+
+    heaps = newHeaps;
     drawMatrix(
-      matriz,
-      `La maquina retiró ${retirados} del montón ${heapIndex + 1}`
+      matrix,
+      `La computadora retiró ${takenAmount} del montón ${heapIndex + 1}`
     );
+
     if (verifyWinner()) {
       drawWinner(false);
       return;
     }
 
-    playerSection.style.display = "flex";
+    player.style.display = "flex";
   }
 
-  function playerTurn() {
-    const index = parseInt(playerGroup.value);
-    const amount = parseInt(playerAmount.value);
+  function playerMove() {
+    const heapIndex = parseInt(playerHeap.value);
+    const takenAmount = parseInt(playerAmount.value);
 
     if (
-      isNaN(index) ||
-      isNaN(amount) ||
-      index < 0 ||
-      index >= montones.length ||
-      amount <= 0 ||
-      amount > montones[index]
+      isNaN(heapIndex) ||
+      isNaN(takenAmount) ||
+      heapIndex < 0 ||
+      heapIndex >= heaps.length ||
+      takenAmount <= 0 ||
+      takenAmount > heaps[heapIndex]
     ) {
       playerError.style.display = "block";
       playerAmount.focus();
@@ -142,9 +143,12 @@ function iniciar() {
     }
 
     playerError.style.display = "none";
-    montones[index] -= amount;
-    const matriz = preparar_matriz(montones);
-    drawMatrix(matriz, `Tú retiraste ${amount} del montón ${index + 1}`);
+    heaps[heapIndex] -= takenAmount;
+    const matrix = preparar_matriz(heaps);
+    drawMatrix(
+      matrix,
+      `Tú retiraste ${takenAmount} del montón ${heapIndex + 1}`
+    );
 
     playerAmount.value = null;
     playerAmount.focus();
@@ -152,29 +156,34 @@ function iniciar() {
     if (verifyWinner()) {
       drawWinner(true);
     } else {
-      machineTurn();
+      machineMove();
     }
-    window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+
+    scrollTo(document.body.scrollHeight);
   }
 
-  function addGroup() {
+  function addHeap() {
     const input = document.createElement("input");
     input.type = "number";
-    groups.appendChild(input);
+    input.min = 1;
+    heapsContainer.appendChild(input);
   }
 
-  function removeGroup() {
-    const childInput = groups.children[groups.children.length - 1];
-    groups.removeChild(childInput);
+  function removeHeap() {
+    if (heapsContainer.children.length > 1) {
+      const childInput =
+        heapsContainer.children[heapsContainer.children.length - 1];
+      heapsContainer.removeChild(childInput);
+    }
   }
 
-  removeGroupButton.onclick = removeGroup;
+  function scrollTo(top) {
+    window.scrollTo({ top, behavior: "smooth" });
+  }
 
-  addGroupButton.onclick = addGroup;
-
+  removeHeapButton.onclick = removeHeap;
+  addHeapButton.onclick = addHeap;
   startButton.onclick = startGame;
-
-  playerButton.onclick = playerTurn;
-
-  goTopButton.onclick = () => window.scrollTo({ top: 0, behavior: "smooth" });
+  playerButton.onclick = playerMove;
+  goTopButton.onclick = () => scrollTo(0);
 }

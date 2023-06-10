@@ -12,67 +12,81 @@
       <h1>Juego del Nim</h1>
 
       <div class="settings">
-        <fieldset class="groups-container">
-          <legend>Define los montones</legend>
-          <div id="groups">
-            <input type="number" min="1" />
-            <input type="number" min="1" />
-            <input type="number" min="1" />
-          </div>
-          <button class="groups-button" id="removeGroupButton">-</button>
-          <button class="groups-button" id="addGroupButton">+</button>
-        </fieldset>
-
         <fieldset>
-          <legend>Elige quién hará el primer movimiento</legend>
-          <label>
-            <input
-              type="radio"
-              name="firstMovementRadio"
-              value="player"
-              checked="checked"
-            />
-            Yo
-          </label>
-          <label>
-            <input type="radio" name="firstMovementRadio" value="machine" />
-            La maquina
-          </label>
+          <legend>Configuración</legend>
+          <div class="settings-group">
+            <h5>Define los montones</h5>
+            <div id="heapsContainer">
+              <input type="number" min="1" />
+              <input type="number" min="1" />
+              <input type="number" min="1" />
+            </div>
+            <button
+              class="btn-secondary btn-settings"
+              id="removeHeapButton"
+              title="Remover montón"
+            >
+              -
+            </button>
+            <button
+              class="btn-secondary btn-settings"
+              id="addHeapButton"
+              title="Agregar montón"
+            >
+              +
+            </button>
+          </div>
+          <div class="settings-group">
+            <h5>Elige quién hará la primera jugada</h5>
+            <label>
+              <input
+                type="radio"
+                name="firstMovementRadio"
+                value="player"
+                checked="checked"
+              />
+              Yo
+            </label>
+            <label>
+              <input type="radio" name="firstMovementRadio" value="cpu" />
+              La computadora
+            </label>
+          </div>
         </fieldset>
-      </div>
 
-      <div>
-        <button id="startButton" class="btn">Iniciar</button>
-        <p id="errorLabel" class="error">
+        <p id="settingsError" class="error">
           Ingrese cantidades válidas para todos los montones.
         </p>
+
+        <button id="startButton" class="btn-primary">Iniciar</button>
       </div>
 
-      <div id="gameStep"></div>
-      <div id="winner">
+      <div class="steps-container">
+        <div id="gameSteps"></div>
+      </div>
+
+      <div class="winner">
         <p>Ganador</p>
-        <button id="goTopButton" class="btn">Ir arriba</button>
+        <button id="goTopButton" class="btn-secondary">Ir arriba</button>
       </div>
     </div>
 
-    <div id="playerSection">
+    <div class="player">
       <div>
         <span>Haz tu jugada:</span>
         <div class="player-inputs">
           <label>
             Montón
-            <select id="playerGroup"></select>
+            <select id="playerHeap"></select>
           </label>
           <label>
             Cantidad
             <input type="number" min="1" id="playerAmount" />
           </label>
-          <button id="playerButton" class="btn">Jugar</button>
+          <button id="playerButton" class="btn-primary">Retirar</button>
         </div>
       </div>
-      <p id="playerError" class="error">
-        Movimiento invalido. Intente nuevamente.
-      </p>
+      <p id="playerError" class="error">Jugada inválida. Intente nuevamente.</p>
     </div>
 
     <script type="module" src="js/main.js"></script>

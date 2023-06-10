@@ -1,112 +1,85 @@
 @import "reset.css";
+@import "inputs.css";
+@import "buttons.css";
+@import "matrix.css";
 
 .container {
-  width: 50%;
   margin: auto;
   padding: 24px 12px 0;
-}
-
-@media (max-width: 720px) {
-  .container {
-    width: 100%;
-  }
-}
-
-h1 {
-  text-align: center;
-  font-size: 48px;
-  font-weight: bold;
-  margin-bottom: 24px;
-}
-
-.settings {
   display: flex;
   flex-direction: column;
-}
-
-.groups-container,
-#groups {
-  display: flex;
-  flex-wrap: wrap;
   align-items: center;
 }
 
-.groups-button {
-  width: 50px;
-  margin: 0 4px;
-  padding: 8px 16px;
-  font-size: 20px;
+.steps-container {
+  width: fit-content;
+  padding-top: 32px;
+}
+
+#gameSteps {
+  display: none;
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: auto;
+}
+
+h1 {
+  font-size: 48px;
   font-weight: bold;
   text-align: center;
-  cursor: pointer;
-  background-color: #ccc;
+  margin-bottom: 32px;
 }
 
-.groups-button:hover {
-  color: #fff;
-  background-color: #525050;
+.settings {
+  max-width: 50%;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-fieldset {
-  padding: 16px;
+.settings fieldset {
+  padding: 24px;
   margin-bottom: 24px;
   border-radius: 10px;
   border: 1px solid #ccc;
 }
 
-fieldset label {
+.settings fieldset legend {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.settings-group:not(:last-child) {
+  margin-bottom: 32px;
+}
+
+.settings-group h5 {
+  margin-bottom: 12px;
+}
+
+.settings-group label {
   margin-right: 24px;
   cursor: pointer;
 }
 
-select,
-input[type="number"] {
-  width: 70px;
-  height: 35px;
-  padding: 8px;
-  margin: 4px 4px;
-  border: 1px solid #ccc;
-  background-color: #fff;
-}
-
-input[type="radio"] {
-  all: revert;
-  cursor: pointer;
-}
-
-.btn {
-  font-size: 24px;
-  font-weight: bold;
-  cursor: pointer;
-  text-align: center;
-  border-radius: 10px;
-  border: 2px solid #bbb;
-  background-color: #ccc;
-  transition: all 0.2s ease-in-out;
-}
-
-.btn:hover {
-  color: #fff;
-  transform: scale(1.1);
-  border: 4px solid #aaa;
-  background-color: #525050;
+#heapsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 8px;
 }
 
 #startButton {
-  display: flex;
-  margin: 0 auto 32px auto;
   width: 200px;
-  height: 50px;
-  align-items: center;
-  justify-content: center;
+  margin-top: 24px;
 }
 
 #playerButton {
   width: 120px;
-  height: 50px;
 }
 
-#playerSection {
+.player {
   width: 100%;
   position: sticky;
   bottom: 0;
@@ -122,84 +95,13 @@ input[type="radio"] {
   box-shadow: 0px -2px 20px 0px rgba(187, 187, 187, 1);
 }
 
-#playerSection div:first-child {
+.player div:first-child {
   display: flex;
   align-items: center;
 }
 
-#playerSection span {
+.player span {
   margin-right: 24px;
-}
-
-@media (max-width: 720px) {
-  #playerSection {
-    flex-direction: column;
-  }
-  #playerSection div:first-child {
-    flex-direction: column;
-  }
-  #playerSection span {
-    margin-bottom: 16px;
-    align-self: flex-start;
-  }
-}
-
-.player-inputs {
-  display: flex;
-  align-items: flex-end;
-}
-
-.player-inputs label {
-  display: flex;
-  flex-direction: column;
-  padding-right: 12px;
-}
-
-.player-inputs label > input,
-select {
-  margin-top: 4px;
-  margin-left: 0;
-}
-
-#gameStep {
-  display: none;
-}
-
-.matrix-container:nth-child(even) {
-  background: #eee;
-}
-
-.matrix-container:nth-child(odd) {
-  background: #fff;
-}
-
-.matrix-container table {
-  border-collapse: separate;
-  border-spacing: 10px;
-}
-
-.matrix-container table td {
-  padding-right: 16px;
-}
-
-.matrix-container table tr > td:first-child {
-  font-style: italic;
-  padding-right: 0;
-}
-
-.matrix-container table tr > td:nth-child(2) {
-  padding-right: 24px;
-}
-
-.matrix-container {
-  padding: 24px;
-  border-radius: 10px;
-}
-
-.matrix-container p {
-  margin-top: 0;
-  margin-bottom: 16px;
-  font-weight: bold;
 }
 
 .error {
@@ -209,21 +111,39 @@ select {
   text-align: center;
 }
 
-#winner {
+.winner {
   display: none;
   padding: 48px 0;
   align-items: center;
   flex-direction: column;
 }
 
-#winner p {
+.winner p {
   font-size: 36px;
   font-weight: bold;
   text-align: center;
+  margin-bottom: 48px;
 }
 
-#winner button {
-  padding: 8px;
-  width: 120px;
-  margin-top: 24px;
+@media (max-width: 720px) {
+  .container {
+    width: 100%;
+  }
+
+  .settings {
+    max-width: 100%;
+  }
+
+  .player {
+    flex-direction: column;
+  }
+
+  .player div:first-child {
+    flex-direction: column;
+  }
+
+  .player span {
+    margin-bottom: 16px;
+    align-self: flex-start;
+  }
 }
