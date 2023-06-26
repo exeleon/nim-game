@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Aguja de Buffon</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles/buffon.css" />
+    <script src="https://www.geogebra.org/apps/deployggb.js"></script>
+    <script src="js/vendor/prism.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <h1>El experimento de la aguja de Buffon</h1>
+
+      <p>
+        Por
+        <a href="https://github.com/exeleon" target="_blank">Manuel Lopera</a
+        ><br />
+        Introducción al Programa de Matemáticas<br />
+        Prof. Juan Diego Vélez Caicedo<br />
+        Universidad Nacional de Colombia Sede Medellín<br />
+        2023-1
+      </p>
+      <br />
+
+      <p>
+        El experimento probabilístico de la aguja de Buffon fue propuesto por
+        Georges-Louis Leclerc, conde de Buffon, en el siglo XVIII. Este
+        experimento es una forma de estimar el valor de &pi; mediante el
+        lanzamiento de una aguja sobre una serie de líneas paralelas en una
+        superficie.
+      </p>
+      <p>
+        El experimento consiste en tomar una superficie con líneas paralelas
+        separadas a una distancia D. Luego, se lanza una aguja también de
+        longitud D sobre la superficie y se registra si la aguja cruza alguna de
+        las líneas o no. Al repetir este proceso un número suficientemente
+        grande de veces y contar el número de veces que la aguja cruza una
+        línea, se puede obtener una aproximación de &pi;.
+      </p>
+      <div class="image-container">
+        <img src="assets/BuffonNeedle.svg" alt="Aguja de Buffon" />
+        <small
+          >Imagen tomada de
+          <a
+            href="https://mathworld.wolfram.com/BuffonsNeedleProblem.html"
+            target="_blank"
+            >Wolfram MathWorld</a
+          ></small
+        >
+      </div>
+      <p>
+        La probabilidad de que la aguja cruce una línea se puede expresar como P
+        = C / N. Donde:
+      </p>
+      <p>
+        P es la probabilidad de cruzar una línea.<br />
+        C es el número de cortes de la aguja sobre una linea.<br />
+        N es el número de lanzamientos.<br />
+      </p>
+      <p>
+        Como veremos más adelante esta probabilidad es 2/&pi; y si despejamos
+        &pi; de la igualdad tenemos:
+      </p>
+      <p>
+        P = C / N<br />
+        2 / &pi; ≈ C / N <br />
+        &pi; ≈ 2N / C
+      </p>
+      <p></p>
+
+      <h2>Explicación geométrica</h2>
+      <p>
+        Tomemos una aguja de longitud D = 1 (las rectas paralelas también
+        estarán a una separación de 1). Entonces cada lanzamiento puede verse
+        descrito por el siguiente par de números:
+      </p>
+      <p>
+        X: la distancia desde el extremo izquierdo de la aguja hasta la recta
+        vertical del mismo lado.<br />
+        &theta;: ángulo de elevación o depresión que forma la aguja con la
+        horizontal. Varía entre -90º y 90º (-&pi;/2 y &pi;/2).
+      </p>
+      <p>
+        Con estos dos ingredientes, podemos decir que para que la aguja corte la
+        recta paralela de la derecha se requiere que la distancia X más la
+        proyección de la aguja al eje horizontal (el coseno del ángulo &theta;)
+        sea mayor o igual que D, o sea, mayor o igual que 1. Es decir:
+      </p>
+      <p>
+        X + cos &theta; >= 1<br />
+        X >= 1 - cos &theta;
+      </p>
+      <p>
+        Quiere decir que cuando X tome valores entre 1 - cos &theta; y D (1 en
+        este ejemplo) la aguja cortará una recta.
+      </p>
+
+      <p>
+        La siguiente visualización de Geogebra ilustra más claramente esta
+        explicación geométrica:
+      </p>
+
+      <div id="ggb-element-1" class="ggb-element"></div>
+
+      <p>
+        Al graficar la funcion f(x) = 1 - cos(x) en el intervalo -90º a 90º
+        (-&pi;/2 a &pi;/2) podemos hallar:
+      </p>
+
+      <ul>
+        <li>
+          El área bajo la curva de f(x), resolviendo la integral definida entre
+          este intervalo.
+        </li>
+        <li>El área R del rectángulo con base &pi; y altura 1.</li>
+        <li>
+          El área de interés A formada entre f(x) y la recta horizontal y = 1. O
+          lo que es lo mismo, la diferencia entre el área del rectangulo y el
+          área bajo la curva de f(x).
+        </li>
+      </ul>
+
+      <p>
+        Todos los puntos dentro de esta ultima área de interés A corresponden a
+        valores de X para los cuales la aguja corta una de las rectas
+        (recordemos que establecimos X en el intervalo [1 - cos &theta;, 1]).
+      </p>
+
+      <p>
+        En la siguiente visualización de Geogebra se pueden apreciar claramente
+        las áreas mencionadas:
+      </p>
+
+      <div id="ggb-element-2" class="ggb-element"></div>
+
+      <p>
+        Por lo tanto, la probabilidad P de obtener un corte esta dada por la
+        relación entre el área A y el área R del rectángulo:
+      </p>
+      <p>
+        P = A / R<br />
+        P = 2 / &pi;
+      </p>
+
+      <p>
+        A continuación se presenta la implementación de este análisis utilizando
+        JavaScript y al final de la página puede ejecutar el algoritmo para
+        simular el experimento:
+      </p>
+
+      <pre>
+        <code class="language-js line-numbers">
+          const randomFloat = (min, max) => Math.random() * (max - min) + min;
+
+          export function buffonNeedle(n) {
+            let cuts, angle, x;
+            cuts = 0;
+            
+            for (let i = 0; i < n; i++) {
+              angle = randomFloat(-Math.PI / 2, Math.PI / 2);
+              x = randomFloat(0, 1);
+              if (1 - Math.cos(angle) < x) {
+                cuts++;
+              }
+            }
+            
+            const prob = cuts / n;
+            return [prob, 2 / prob];
+          }
+        </code>
+      </pre>
+
+      <div class="simulation">
+        <h2>Simulación del experimento</h2>
+        <p>
+          Si introduce un número de lanzamientos demasiado grande puede
+          ocasionar que esta pestaña de su navegador se bloquee mientras se
+          ejecuta el proceso, pero no se preocupe, la implementación tiene esto
+          en cuenta y abortará la ejecución despues de 1 minuto.
+        </p>
+
+        <div class="inputs">
+          <label for="events"> Número de lanzamientos de la aguja </label>
+          <input type="number" id="events" name="events" min="1" />
+          <button id="play">Ejecutar</button>
+          <div class="loading"></div>
+        </div>
+        <span class="error">Ingrese el número de lanzamientos</span>
+
+        <div class="results">
+          <h3>Resultados</h3>
+          <p>Probabilidad de cortes: <span id="cutProb"></span></p>
+          <p>Aproximación al número &pi; : <span id="piAprox"></span></p>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="js/buffon.js"></script>
+  </body>
+</html>
