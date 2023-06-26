@@ -82,12 +82,18 @@
         estarán a una separación de 1). Entonces cada lanzamiento puede verse
         descrito por el siguiente par de números:
       </p>
-      <p>
-        X: la distancia desde el extremo izquierdo de la aguja hasta la recta
-        vertical del mismo lado.<br />
-        &theta;: ángulo de elevación o depresión que forma la aguja con la
-        horizontal. Varía entre -90º y 90º (-&pi;/2 y &pi;/2).
-      </p>
+
+      <ul>
+        <li>
+          X: la distancia desde el extremo izquierdo de la aguja hasta la recta
+          vertical del mismo lado.
+        </li>
+        <li>
+          &theta;: ángulo de elevación o depresión que forma la aguja con la
+          horizontal. Varía entre -90º y 90º (-&pi;/2 y &pi;/2).
+        </li>
+      </ul>
+
       <p>
         Con estos dos ingredientes, podemos decir que para que la aguja corte la
         recta paralela de la derecha se requiere que la distancia X más la
@@ -110,6 +116,7 @@
 
       <div id="ggb-element-1" class="ggb-element"></div>
 
+      <h2>Cálculo de la probabilidad de corte</h2>
       <p>
         Al graficar la funcion f(x) = 1 - cos(x) en el intervalo -90º a 90º
         (-&pi;/2 a &pi;/2) podemos hallar:
@@ -150,10 +157,11 @@
         P = 2 / &pi;
       </p>
 
+      <h2>Implementación del algoritmo</h2>
       <p>
-        A continuación se presenta la implementación de este análisis utilizando
-        JavaScript y al final de la página puede ejecutar el algoritmo para
-        simular el experimento:
+        A continuación se presenta el algoritmo de este análisis escrito en
+        JavaScript, al final de la página puede ejecutarlo para simular el
+        experimento:
       </p>
 
       <pre>
