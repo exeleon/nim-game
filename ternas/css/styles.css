@@ -1,0 +1,76 @@
+.container {
+  width: 70%;
+  margin: auto;
+  padding: 3rem 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+
+.text {
+  width: 100%;
+}
+
+.math {
+  text-align: center;
+}
+
+.slide_container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+table {
+  border: 1px solid #ccc;
+}
+
+table thead {
+  background-color: #ccc;
+}
+
+table td,
+th {
+  padding: 0.5rem 1rem;
+}
+
+.figure {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.figure svg {
+  border: 1px solid #ccc;
+}
+
+.node circle {
+  fill: #999;
+  stroke: steelblue;
+  stroke-width: 3px;
+}
+
+.node text {
+  font: 12px sans-serif;
+}
+
+.link {
+  fill: none;
+  stroke: #ccc;
+  stroke-width: 2px;
+}
+
+img {
+  width: 60%;
+}
+
+code {
+  color: #07a;
+  font-weight: bold;
+}
+
+ul li {
+  margin-bottom: 1rem;
+}

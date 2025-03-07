@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ternas Pitagóricas</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script
+      id="MathJax-script"
+      async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+    ></script>
+    <link rel="stylesheet" href="./css/styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="text">
+        <h1>Una Relación de Ternas Pitagóricas</h1>
+        <p>
+          Por Manuel Lopera
+          <br />
+          Fundamentos de Matemáticas Discretas<br />
+          Prof. David Blazquez Sanz<br />
+          Universidad Nacional de Colombia Sede Medellín<br />
+          2024-2
+        </p>
+        <p>
+          Una terna pitagórica es un conjunto de tres números naturales que
+          cumplen con la relación \(a^2 + b^2 = c^2\). Los números \(a\), \(b\)
+          son las longitudes de los catetos y \(c\) es la longitud de la
+          hipotenusa en un triángulo rectángulo.
+        </p>
+        <p>
+          Las ternas cuyos tres números \(a\), \(b\) y \(c\) son primos
+          relativos, es decir, cuyo máximo común divisor es 1, son denominadas
+          ternas pitagóricas primitivas. Las ternas no primitivas son aquellas
+          donde sus términos son múltiplos de una terna primitiva y no son de
+          interés en esta ocasión.
+        </p>
+        <p>
+          Veamos la relación donde el elemento \(c\) (la hipotenusa) de una
+          terna es igual al elemento \(a\) (el primer cateto) de otra terna. Sea
+          \(X\) el conjunto de ternas pitagóricas primitivas
+        </p>
+        <p class="math">
+          \(X = \{(a, b, c) \in \mathbb{N} \times \mathbb{N} \times \mathbb{N}
+          \colon a^2 + b^2 = c^2 \land mcd(a, b, c) = 1\}\)
+        </p>
+        <p>
+          y \(R \subseteq X \times X \) una relación sobre \(X\) definida por
+        </p>
+        <p class="math">\((a, b, c) \space R \space (d, e, f)\) si \(c = d\)</p>
+        <p>
+          A continuación, seleccione el número de ternas pitagóricas que desea
+          generar usando el control deslizable. El máximo esta limitado a 11 ya
+          que los valores de las ternas bajo esta relación crecen muy rápido y
+          sobrepasan el máximo entero soportado en JavaScript, el cual es
+          \(2^{53} - 1\).
+        </p>
+        <div class="slide_container">
+          <input
+            type="range"
+            min="2"
+            max="11"
+            value="5"
+            class="slider"
+            id="triplets"
+          />
+          <span id="slider_value"></span>
+        </div>
+        <p>Las ternas generadas se muestran en la siguiente tabla:</p>
+      </div>
+
+      <div class="figure">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>a</th>
+              <th>b</th>
+              <th>c</th>
+            </tr>
+          </thead>
+          <tbody id="data_table"></tbody>
+        </table>
+        <p>
+          Tabla 1. Primeras <span class="triplets_number"></span> ternas
+          pitagóricas que cumplen la relación \(R\).
+        </p>
+      </div>
+
+      <div class="text">
+        <p>
+          Para entender mejor la relación propuesta veamos la siguiente imagen.
+          En ella se observa como la hipotenusa de cada triángulo rectángulo es
+          igual al primer cateto del siguiente (note que la imagen no está a
+          escala).
+        </p>
+      </div>
+
+      <div class="figure">
+        <img src="./assets/triangles.png" alt="Triangulos" />
+        <p>
+          Imagen 1. Triángulos de ternas pitagóricas bajo la relación \(R\).
+        </p>
+      </div>
+
+      <div class="text">
+        <p>Notemos que \(R\):</p>
+        <p>
+          No es reflexiva, esto es, no se cumple \((a, b, c) \space R \space (a,
+          b, c)\)
+        </p>
+        <p>
+          No es simétrica, esto es, \(((a, b, c), (c, d, e)) \in R\) pero \(((c,
+          d, e), (a, b, c)) \notin R\)
+        </p>
+        <p>
+          No es transitiva, esto es, \(((a, b, c), (c, d, e)) \in R\) y \(((c,
+          d, e), (e, f, g)) \in R\) pero \(((a, b, c), (e, f, g)) \notin R\)
+        </p>
+
+        <p>
+          Es antisimétrica, esto es, \(((a, b, c), (c, d, e)) \in R\) y \(((c,
+          d, e), (a, b, c)) \notin R\) para todo \((a, b, c) \neq (c, d, e)\)
+        </p>
+        <p>
+          Por último, se muestra el árbol formado por estas primeras
+          <span class="triplets_number"></span>
+          ternas pitagóricas relacionadas mediante \(R\).
+        </p>
+      </div>
+
+      <div class="figure">
+        <svg width="800" height="400"></svg>
+        <p>Imagen 2. Árbol de ternas pitagóricas bajo la relación \(R\).</p>
+      </div>
+
+      <div class="text">
+        <h2>Algoritmo</h2>
+        <p>
+          Inicialmente, intenté implementar un algoritmo que usara una de las
+          formas de generación de ternas pitagóricas
+          <a
+            href="https://es.wikipedia.org/wiki/Terna_pitag%C3%B3rica#cite_ref-4"
+            target="_blank"
+            >más común</a
+          >
+          que se encuentra en la Web. Tomando dos números naturales \(m\) y
+          \(n\) tales que \(n > m\), se puede generar una terna pitagórica \((a,
+          b, c)\) de la siguiente manera:
+        </p>
+        <p class="math">\((a, b, c) = (n^2 - m^2, 2mn, m^2 + n^2)\)</p>
+        <p>
+          El rendimiento de este primer intento fue muy pobre, mediante un ciclo
+          se va incrementando \(m\) y \(n\) en una unidad mientras se verifica
+          una a una si la nueva terna generada cumple la relación \(R\) con la
+          última terna válida encontrada. Como es de esperarse, cuando se
+          encuentra la terna 6 ya los números son tan grandes y tan espaciados
+          entre si, que hallar la terna 7 se hace practicamente imposible en una
+          computadora normal.
+        </p>
+
+        <p>
+          Por lo tanto, decidí investigar un poco más y encontré un método de
+          generación
+          <a href="https://www.redalyc.org/pdf/6079/607972920002.pdf"
+            >(Fallas, pp. 16-17)</a
+          >
+          exactamente para los tipos de ternas que la relación \(R\) necesita.
+          Posiblemente ya notamos que todas las termas son de la forma
+        </p>
+        <p class="math">\((a,b,b+1) \text{ con } b > a\)</p>
+        <p>
+          El método genera ternas para cualquier \(n \in \mathbb{N}\) de la
+          siguiente manera:
+        </p>
+        <p class="math">\((a, b, c) = (2n + 1, 2n^2 + 2n, 2n^2 + 2n + 1)\)</p>
+        <p>
+          y hallar \(n\) para generar la siguiente terna es fácil simplemente
+          igualando en la terna actual \(c = 2n + 1\), esto nos permite evitar
+          ciclos innecesarios y generar directamente la siguiente terna
+          requerida, lo cual es bastante eficiente y solo se ve limitado por el
+          máximo número entero soportado por JavaScript.
+        </p>
+        <p>
+          Si desea revisar el código fuente completo, puede visitar el siguiente
+          <a
+            href="https://github.com/exeleon/nim-game/tree/main/ternas"
+            target="_blank"
+            >repositorio</a
+          >. Los métodos que generan las ternas se encuentran en el archivo
+          <a
+            href="https://github.com/exeleon/nim-game/blob/main/ternas/js/main.js"
+            target="_blank"
+            >js/main.js</a
+          >
+          y pueden identificarse como <code>generate_triplets_v1</code> y
+          <code>generate_triplets_v2</code> respectivamente.
+        </p>
+      </div>
+
+      <div class="text">
+        <h2>Referencias</h2>
+
+        <ul>
+          <li>
+            Colaboradores de Wikipedia. Terna pitagórica [en línea]. Wikipedia,
+            La enciclopedia libre, 2025 [fecha de consulta: 27 de febrero del
+            2025]. Disponible en
+            <a
+              href="https://es.wikipedia.org/w/index.php?title=Terna_pitag%C3%B3rica&oldid=165730509"
+              target="_blank"
+              >https://es.wikipedia.org/w/index.php?title=Terna_pitag%C3%B3rica&oldid=165730509</a
+            >
+          </li>
+          <li>
+            Fallas Juan José. Ternas pitagóricas: métodos para generarlas y
+            algunas curiosidades. Revista Digital: Matemática, Educación e
+            Internet [en linea]. 2009, 9(2), 1-21[fecha de Consulta 6 de Marzo
+            de 2025]. ISSN: 1659-0643. Disponible en:
+            <a
+              href="https://www.redalyc.org/articulo.oa?id=607972920002"
+              target="_blank"
+              >https://www.redalyc.org/articulo.oa?id=607972920002</a
+            >
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <script src="./js/main.js"></script>
+  </body>
+</html>
